@@ -5,6 +5,7 @@ from itertools import cycle
 import datetime as dt
 import re
 import time
+import tabooWordClass
 
 #Declarations should be at the top, with inconsistant spacing, like God intended
 
@@ -27,7 +28,8 @@ def pickWord ():
 	return out
 
 forbiddenWord = pickWord()
-forbiddenWordRegex = re.compile(r'(\W|^)' + forbiddenWord + '(\W|$)')
+
+wordStorage = tabooWordClass.tabooWordClass(forbiddenWord)
 
 print(forbiddenWord)
 
@@ -35,13 +37,12 @@ print(forbiddenWord)
 async def on_message(message):
 	print ("------------------")
 	print ("New Message: " + message.content)
+	print ("As a reminder, the word is " + wordStorage.getRawWord())
+	forbiddenWordRegex = wordStorage.getWord()
 	if message.author == client.user:
 		print("That's me")
 		return
 	#Should be in a try-catch, but fuck that shit
-
-	#forbiddenWordRegex = await newWord()
-
 	elif re.search(forbiddenWordRegex, message.content) and message.server:
 		msg = "It seems you've used the taboo word, \"" + forbiddenWord + "\".  For this you have been kicked.  May the gods forgive you, and I, for our use of this foul word."
 		await client.send_message(message.channel, msg)
@@ -57,11 +58,13 @@ async def newWord():
 	counter = 0
 	allowChange = True
 	while not client.is_closed:
-		if dt.datetime.now().hour == 13 and allowChange: #Checks time and ensures no doubles
+		if dt.datetime.now().hour == 15 and allowChange: #Checks time and ensures no doubles
 			print("THE TIME IS NIGH")
 			
 			forbiddenWordInternal = pickWord() #Generates new word and regex
-			forbiddenWordRegexOut = re.compile(r'(\W|^)' + forbiddenWord + '(\W|$)')
+			#forbiddenWordRegexOut = re.compile(r'(\W|^)' + forbiddenWord + '(\W|$)')
+
+			wordStorage.setWord(forbiddenWordInternal)
 
 			allowChange = False #No doubling allowed
 
@@ -70,7 +73,7 @@ async def newWord():
 				for chad in servlad.channels:
 					if chad.name == "general":
 						chadID = chad.id
-				await client.send_message(servlad.get_channel(chadID), "@everyone Alert: the new taboo word is \"" + forbiddenWord + "\"")
+				await client.send_message(servlad.get_channel(chadID), "@everyone Alert: the new taboo word is \"" + forbiddenWordInternal + "\"")
 
 		if (not allowChange): #Should count out two hours before checking again
 			counter = counter + 1
@@ -79,8 +82,6 @@ async def newWord():
 				counter = 0
 
 		await asyncio.sleep(1)
-
-		return forbiddenWordRegexOut
 
 @client.event
 async def on_ready():
