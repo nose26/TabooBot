@@ -9,7 +9,7 @@ import tabooWordClass
 
 #Declarations should be at the top, with inconsistant spacing, like God intended
 
-TOKEN = 'NTAzNjMxODYzNDk2MzEwNzg0.Dq-u_g.fQ4cFmMFbjFiURJ2nMmkF8rWIoE'
+TOKEN = open('../BotTokenVault/TabooBot.txt').read()
 
 client = discord.Client()
 
