@@ -44,7 +44,7 @@ async def on_message(message):
 		return
 	#Should be in a try-catch, but fuck that shit
 	elif re.search(forbiddenWordRegex, message.content) and message.server:
-		msg = "It seems you've used the taboo word, \"" + forbiddenWord + "\".  For this you have been kicked.  May the gods forgive you, and I, for our use of this foul word."
+		msg = "It seems you've used the taboo word, \"" + wordStorage.getRawWord() + "\".  For this you have been kicked.  May the gods forgive you."
 		await client.send_message(message.channel, msg)
 		#the big kick
 		await client.kick(message.author)
@@ -58,7 +58,7 @@ async def newWord():
 	counter = 0
 	allowChange = True
 	while not client.is_closed:
-		if dt.datetime.now().hour == 15 and allowChange: #Checks time and ensures no doubles
+		if dt.datetime.now().hour == 0 and allowChange: #Checks time and ensures no doubles
 			print("THE TIME IS NIGH")
 			
 			forbiddenWordInternal = pickWord() #Generates new word and regex
