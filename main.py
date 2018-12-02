@@ -9,7 +9,7 @@ import tabooWordClass
 
 #Declarations should be at the top, with inconsistant spacing, like God intended
 
-TOKEN = open('../BotTokenVault/TabooBot.txt').read()
+TOKEN = open('../BotTokenVault/TabooBot.txt').read() #Token seperate for security.  Works fine on my machine
 
 client = discord.Client()
 
@@ -47,7 +47,10 @@ async def on_message(message):
 		msg = "It seems you've used the taboo word, \"" + wordStorage.getRawWord() + "\".  For this you have been kicked.  May the gods forgive you."
 		await client.send_message(message.channel, msg)
 		#the big kick
-		await client.kick(message.author)
+		try:
+			await client.kick(message.author)
+		except discord.errors.Forbidden:
+			await client.send_message(message.channel, "Hmm, you aren't kicked.  Mark my words, even if I cannot punish you, the gods will.")
 		return
 	else:
 		return
