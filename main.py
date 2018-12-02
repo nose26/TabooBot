@@ -44,7 +44,7 @@ async def on_message(message):
 		return
 	#Should be in a try-catch, but fuck that shit
 	elif re.search(forbiddenWordRegex, message.content) and message.server:
-		msg = "It seems you've used the taboo word, \"" + wordStorage.getRawWord() + "\".  For this you have been kicked.  May the gods forgive you."
+		msg = "It seems you've used the taboo word, \"" + wordStorage.getRawWord() + "\".  For this you will been kicked.  May the gods forgive you."
 		await client.send_message(message.channel, msg)
 		#the big kick
 		try:
