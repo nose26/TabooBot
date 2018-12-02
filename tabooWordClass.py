@@ -1,3 +1,5 @@
+#This is just a wrapper because Java broke me, and I couldn't figure
+#out another way to share this kind of date between funcions.
 import re
 class tabooWordClass:
 	currentTaboo = ""

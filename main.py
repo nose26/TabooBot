@@ -40,14 +40,11 @@ print(forbiddenWord)
 
 @client.event #Should I have cleaned this up? Yes.  Did I? No.
 async def on_message(message):
-	print ("------------------")
-	print ("New Message: " + message.content)
-	print ("As a reminder, the word is " + wordStorage.getRawWord())
-	forbiddenWordRegex = wordStorage.getWord()
+	forbiddenWordRegex = wordStorage.getWord() #Pulls word from wrapper-thing
 	if message.author == client.user:
 		print("That's me")
 		return
-	#Should be in a try-catch, but fuck that shit
+	#Is partially in a try-except, and the rest won't cause any overt issues.  Hopefully.
 	elif re.search(forbiddenWordRegex, message.content) and message.server:
 		msg = "It seems you've used the taboo word, \"" + wordStorage.getRawWord() + "\".  For this you will been kicked.  May the gods forgive you."
 		await client.send_message(message.channel, msg)
@@ -67,11 +64,9 @@ async def newWord():
 	allowChange = True
 	while not client.is_closed:
 		if dt.datetime.now().hour == 0 and allowChange: #Checks time and ensures no doubles
-			print("THE TIME IS NIGH")
 			
-			forbiddenWordInternal = pickWord() #Generates new word and regex
+			forbiddenWordInternal = pickWord() #Generates new word and passes it to the retainer class
 			#forbiddenWordRegexOut = re.compile(r'(\W|^)' + forbiddenWord + '(\W|$)')
-
 			wordStorage.setWord(forbiddenWordInternal)
 
 			allowChange = False #No doubling allowed
@@ -89,7 +84,7 @@ async def newWord():
 				allowChange = True
 				counter = 0
 
-		await asyncio.sleep(1)
+		await asyncio.sleep(1) #Waits a second before checking again
 
 @client.event
 async def on_ready():
