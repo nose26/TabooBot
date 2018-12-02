@@ -1,3 +1,8 @@
+#TabooBot
+#Brought to you by a jackass with too much free time
+#I actully can't read this code anymore.  It started out right, and then it went to shit
+#Hopefully none of the errors break it, but just in case don't ever add to a server that doesn't have a general
+#Anyway, cheers mate
 import discord
 import random
 import asyncio
